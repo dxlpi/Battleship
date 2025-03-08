@@ -105,8 +105,10 @@ class BattleShip:
 if __name__ == '__main__':
     random.seed(10)
     env = BattleShip(action_cost=-1, hit_empty=-2, hit_ship=3, destroy_ship=10)
-    model = MCModel(env, num_episodes=200)
+    model = MCModel(env, num_episodes=1000, epsilon=0.1, gamma=0.99)
     q_table, rewards = model.run()
 
     plt.plot(rewards)
+    plt.xlabel("Episodes")
+    plt.ylabel("Total Reward")
     plt.show()
