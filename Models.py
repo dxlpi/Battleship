@@ -77,7 +77,10 @@ class MCModel(Models):
     def run(self):
         rewards = []
 
-        for _ in tqdm(range(self.num_episodes)):
+        for episode in tqdm(range(self.num_episodes)):
+            # Decay epsilon over time to reduce exploration
+            self.epsilon = max(0.01, 0.1 * (0.995**episode))  
+
             self.env.reset()
             self.env.start()
             super().reset()
@@ -109,7 +112,7 @@ class MCModel(Models):
                 G = self.gamma * G + reward
                 self.returns[state][location] += G
                 self.visit_counts[state][location] += 1
-                self.q_table[state][location] = self.returns[state][location] / self.visit_counts[state][location]
+                self.q_table[state][location] += self.alpha * (G - self.q_table[state][location])
 
             rewards.append(reward)
 

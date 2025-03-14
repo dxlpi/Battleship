@@ -1,14 +1,14 @@
 import random
 from copy import deepcopy
 from collections import defaultdict
-from Models import TDModel, MCModel, DQNModel
+from Models import MCModel
 
 import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib import pyplot as plt
 
 class BattleShip:
-    def __init__(self, action_cost=-1, hit_empty=-2, hit_ship=3, destroy_ship=10):
+    def __init__(self, action_cost=-1, hit_empty=-10, hit_ship=10, destroy_ship=30):
         self.destroy_ship = destroy_ship
         self.hit_ship = hit_ship
         self.hit_empty = hit_empty
@@ -104,11 +104,18 @@ class BattleShip:
 
 if __name__ == '__main__':
     random.seed(10)
+    
+    # Define hyperparameters
+    num_episodes = 30000  # Number of episodes for Monte Carlo training
+    epsilon = 0.1        # Exploration rate
+    gamma = 0.99         # Discount factor
+
     env = BattleShip(action_cost=-1, hit_empty=-2, hit_ship=3, destroy_ship=10)
-    model = MCModel(env, num_episodes=1000, epsilon=0.1, gamma=0.99)
+    model = MCModel(env, num_episodes=num_episodes, epsilon=epsilon, gamma=gamma)
     q_table, rewards = model.run()
 
     plt.plot(rewards)
     plt.xlabel("Episodes")
     plt.ylabel("Total Reward")
+    plt.title(f"Monte Carlo Learning\nEpisodes: {num_episodes}, Epsilon: {epsilon}, Gamma: {gamma}")
     plt.show()
