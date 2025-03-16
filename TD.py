@@ -102,7 +102,7 @@ class BattleShip:
 if __name__ == '__main__':
     random.seed(10)  
     env = BattleShip(action_cost=-1, hit_empty=-2, hit_ship=3, destroy_ship=10)
-    model = TDModel(env, num_episodes=20000, epsilon=0.1, alpha=0.5, gamma=0.9)
+    model = TDModel(env, num_episodes=20000, epsilon=0.1, alpha=0.5, gamma=0.98)
     q_table, rewards = model.run()
 
 
